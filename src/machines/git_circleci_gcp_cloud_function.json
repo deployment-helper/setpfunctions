@@ -1,5 +1,5 @@
 {
-  "Version": "0.0.1",
+  "Version": "0.5",
   "TimeoutSeconds": 300,
   "Comment": "A State Machine to setup a github repo, circleci pipeline and google cloud function",
   "StartAt": "START_STATE",

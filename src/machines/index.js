@@ -1,0 +1,1 @@
+exports.GIT_CIRCLECI_GCP_CLOUD_FUNCTION = require('./git_circleci_gcp_cloud_function');

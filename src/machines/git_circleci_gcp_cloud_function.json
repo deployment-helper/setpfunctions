@@ -1,0 +1,66 @@
+{
+  "Version": "0.0.1",
+  "TimeoutSeconds": 300,
+  "Comment": "A State Machine to setup a github repo, circleci pipeline and google cloud function",
+  "StartAt": "START_STATE",
+  "States": {
+    "START_STATE": {
+      "Type": "Task",
+      "Comment": "",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Next": "RC_REPO_GITHUB"
+    },
+    "RC_REPO_GITHUB": {
+      "Type": "Task",
+      "Comment": "",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Next": "RU_NOTIFICATION_1"
+    },
+    "RU_NOTIFICATION_1": {
+      "Type": "Task",
+      "Comment": "",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Next": "RU_REPO_GITHUB"
+    },
+    "RU_REPO_GITHUB": {
+      "Type": "Task",
+      "Comment": "",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Next": "RU_NOTIFICATION_2"
+    },
+    "RU_NOTIFICATION_2": {
+      "Type": "Task",
+      "Comment": "",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Next": "RC_PIPEPINE_CIRCLECI"
+    },
+    "RC_PIPEPINE_CIRCLECI": {
+      "Type": "Task",
+      "Comment": "",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Next": "RU_NOTIFICATION_3"
+    },
+    "RU_NOTIFICATION_3": {
+      "Type": "Task",
+      "Comment": "",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Next": "RU_PIPELINE_CIRCLECI"
+    },
+    "RU_PIPELINE_CIRCLECI": {
+      "Type": "Task",
+      "Comment": "",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Next": "RU_NOTIFICATION_4"
+    },
+    "RU_NOTIFICATION_4": {
+      "Type": "Task",
+      "Comment": "",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Next": "END_STATE"
+    },
+    "END_STATE": {
+      "Type": "Succeed",
+      "Comment": ""
+    }
+  }
+}

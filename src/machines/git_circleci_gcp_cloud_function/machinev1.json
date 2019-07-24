@@ -1,0 +1,105 @@
+{
+  "Version": "1.0",
+  "TimeoutSeconds": 300,
+  "Comment": "A State Machine to setup a github repo, circleci pipeline and google cloud function",
+  "StartAt": "START_STATE",
+  "States": {
+    "START_STATE": {
+      "Type": "Pass",
+      "Comment": "State to do any data formatting before starting if required",
+      "Next": "RC_REPO_GITHUB"
+    },
+    "RC_REPO_GITHUB": {
+      "Type": "Task",
+      "Comment": "Github repo creation",
+      "Parameters": {
+        "access_token.$": "$.vcs.source_access_token",
+        "repo_name.$": "$.name",
+        "action": "RC_CREATE_GITHUB"
+      },
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "ResultPath": "$.output.vcs",
+      "Next": "RU_NOTIFICATION_1"
+    },
+    "RU_NOTIFICATION_1": {
+      "Type": "Pass",
+      "Comment": "Notification",
+      "Next": "RU_REPO_GITHUB"
+    },
+    "RU_REPO_GITHUB": {
+      "Type": "Task",
+      "Comment": "First commit to repo",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Parameters": {
+        "source_access_token.$": "$.vcs.source_access_token",
+        "destination_access_token.$": "$.vcs.destination_access_token",
+        "source_repo_url.$": "$.vcs.source_repo_url",
+        "destination_repo_url.$": "$.output.vcs.clone_url",
+        "action": "RU_COMMIT_GITHUB"
+      },
+      "ResultPath": "$.output.vcs.ru_vcs",
+      "Next": "RU_NOTIFICATION_2"
+    },
+    "RU_NOTIFICATION_2": {
+      "Type": "Pass",
+      "Comment": "Notification",
+      "Next": "RC_PIPEPINE_CIRCLECI"
+    },
+    "RC_PIPEPINE_CIRCLECI": {
+      "Type": "Task",
+      "Comment": "Pipeline creation on Circle Ci",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Parameters": {
+        "access_token.$": "$.devops.access_token",
+        "project_name.$": "$.name",
+        "vcs_type.$": "$.devops.vcs_type",
+        "user_name.$": "$.output.vcs.user",
+        "action": "RC_CREATE_CIRCLECI"
+      },
+      "ResultPath": "$.output.devops",
+      "Next": "RU_NOTIFICATION_3"
+    },
+    "RU_NOTIFICATION_3": {
+      "Type": "Pass",
+      "Comment": "Notificatoin",
+      "Next": "RU_PIPELINE_CIRCLECI"
+    },
+    "RU_PIPELINE_CIRCLECI": {
+      "Type": "Task",
+      "Comment": "Environment variable creation and updation on circle ci",
+      "Resource": "arn:aws:lambda:ap-southeast-1:582877194103:function:mcrc-step-function-worker",
+      "Parameters": {
+        "access_token.$": "$.devops.access_token",
+        "project_name.$": "$.name",
+        "vcs_type.$": "$.devops.vcs_type",
+        "user_name.$": "$.output.vcs.user",
+        "variables": [
+          {
+            "name": "APP_NAME",
+            "value.$": "$.name"
+          },
+          {
+            "name": "GOOGLE_ACCOUNT_KEY",
+            "value.$": "$.cloud.account_key"
+          },
+          {
+            "name": "PROJECT_NAME",
+            "value.$": "$.cloud.account_key"
+          }
+        ],
+        "action": "RU_ENVVAR_CIRCLECI"
+      },
+      "ResultPath": "$.output.devops.ru_devops",
+      "Next": "RU_NOTIFICATION_4"
+    },
+    "RU_NOTIFICATION_4": {
+      "Type": "Pass",
+      "Comment": "Notification",
+      "Next": "END_STATE"
+    },
+    "END_STATE": {
+      "Type": "Succeed",
+      "Comment": "All Resource created successfully."
+    }
+  }
+}

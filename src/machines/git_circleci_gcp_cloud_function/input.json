@@ -1,0 +1,17 @@
+{
+    "name":"machine-test-app",
+    "desc":"Temp desc",
+    "vcs":{
+        "source_access_token":"",
+        "destination_access_token":"",
+        "source_repo_url":"https://github.com/vinaymavi/drivinglicencetest.com.git"
+    },
+    "devops":{
+        "access_token":"",
+        "vcs_type":"github"
+    },
+    "cloud":{
+        "account_key":"ACCOUNT_KEY",
+        "project_name":"multi-cloud-resource-creation"
+    }
+}

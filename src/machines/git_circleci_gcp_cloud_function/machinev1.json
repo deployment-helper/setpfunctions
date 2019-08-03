@@ -35,6 +35,9 @@
         "destination_access_token.$": "$.vcs.destination_access_token",
         "source_repo_url.$": "$.vcs.source_repo_url",
         "destination_repo_url.$": "$.output.vcs.clone_url",
+        "context":{
+          "APP_NAME.$":"$.name"
+        },
         "action": "RU_COMMIT_GITHUB"
       },
       "ResultPath": "$.output.vcs.ru_vcs",
@@ -79,12 +82,16 @@
             "value.$": "$.name"
           },
           {
-            "name": "GOOGLE_ACCOUNT_KEY",
+            "name": "DEV_GCLOUD_ACCOUNT_KEY",
             "value.$": "$.cloud.account_key"
           },
           {
-            "name": "PROJECT_NAME",
-            "value.$": "$.cloud.account_key"
+            "name": "GCP_PROJECT_NAME",
+            "value.$": "$.cloud.project_name"
+          },
+          {
+            "name": "RUN_TIME",
+            "value.$": "$.cloud.runtime"
           }
         ],
         "action": "RU_ENVVAR_CIRCLECI"

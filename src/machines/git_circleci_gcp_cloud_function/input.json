@@ -1,17 +1,18 @@
 {
-    "name":"machine-test-app",
-    "desc":"Temp desc",
-    "vcs":{
-        "source_access_token":"",
-        "destination_access_token":"",
-        "source_repo_url":"https://github.com/vinaymavi/drivinglicencetest.com.git"
-    },
-    "devops":{
-        "access_token":"",
-        "vcs_type":"github"
-    },
-    "cloud":{
-        "account_key":"ACCOUNT_KEY",
-        "project_name":"multi-cloud-resource-creation"
-    }
+  "name": "machine_test_313",
+  "desc": "machine_test_313",
+  "vcs": {
+    "source_access_token": "<github_access_token>",
+    "destination_access_token": "<github_access_token>",
+    "source_repo_url": "https://github.com/mcrc-templates/gcp-nodejs-cloud-function.git"
+  },
+  "devops": {
+    "access_token": "<circle_ci_access_token>",
+    "vcs_type": "github"
+  },
+  "cloud": {
+    "account_key": "<base64_key>",
+    "project_name": "<gcp_project_name>",
+    "runtime": "nodejs10"
+  }
 }
